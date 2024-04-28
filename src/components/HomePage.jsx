@@ -1,24 +1,44 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
+import users from '../data/users.json'
+import "./css/HomePage.css"
 
 function HomePage() {
-  const history = useHistory();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+  
+    if (loggedInUser) {
+      const foundUser = users.users.find(user => user.email === loggedInUser.email);
+      
+      if (foundUser) {
+        setUser(foundUser);
+      }
+    }
+  }, []);
+  
 
   const handleLogout = () => {
-    // Perform logout logic here
-    history.push('/');
+    navigate('/');
   };
 
   const handleDrinkingPage = () => {
-    history.push('/drinking');
+    //console.log("Hello");
+    navigate('/drinking');
   };
 
   return (
-    <div>
-      <h2>Hello, [Name of User]</h2>
-      <button onClick={handleLogout}>Logout</button>
-      <button onClick={handleDrinkingPage}>I'm out drinking tonight</button>
-    </div>
+    <body>
+        <center><div class="homeContainer">
+        <h2 id="welcomeMessage">Hello, {user && user.name}</h2>
+        <button id="logoutButton" onClick={handleLogout}>Logout</button>
+        <button id="sessionButton" onClick={handleDrinkingPage}>I'm out drinking tonight!</button>
+        </div>
+        </center>
+    </body>
+    
   );
 }
 

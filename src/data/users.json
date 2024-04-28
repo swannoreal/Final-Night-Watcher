@@ -1,0 +1,34 @@
+{
+    "users":  [
+        {
+        "name": "Swann",
+        "email": "swann@qmul.ac.uk",
+        "username": "swann",
+        "password": "123",
+        "age": 21,
+        "weight": "medium",
+        "gender": "male",
+        "gpd": false
+        },
+        {
+            "name": "Swann Jr.",
+            "email": "swannjr@qmul.ac.uk",
+            "username": "swannjr",
+            "password": "1234",
+            "age": 15,
+            "weight": "medium",
+            "gender": "male",
+            "gpd": false
+        },
+        {
+            "name": "Swannita Sr.",
+            "email": "swannita@qmul.ac.uk",
+            "username": "swannita",
+            "password": "12345",
+            "age": 61,
+            "weight": "medium",
+            "gender": "female",
+            "gpd": true
+        }
+    ]
+}
