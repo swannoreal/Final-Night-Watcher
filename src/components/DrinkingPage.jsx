@@ -26,9 +26,8 @@ function DrinkingPage() {
       if (user.password === password){
         localStorage.setItem('loggedInUser', JSON.stringify({ email: user.email }));
         
-        // Extract additional user information
-        
       }
+      //Information sent to the BN residing in the API
       const { age, weight, gender, gpd } = user;
       const drinkingData = {
       alone: alone,

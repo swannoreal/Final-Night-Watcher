@@ -18,6 +18,8 @@ CORS(app, resources={"/drinking-data": {"origins": "http://localhost:3001"}})
 gum.about()
 gnb.configuration()
 
+#Defining the model structure
+
 bn = gum.BayesNet('NW')
 
 safe = bn.add(gum.LabelizedVariable('Safe', 'Safe', ['no', 'yes']))
@@ -43,6 +45,7 @@ drf = bn.add(gum.LabelizedVariable('Drinking_Risk_Factors', 'Drinking_Risk_Facto
 physical = bn.add(gum.LabelizedVariable('Physical_Risk', 'Physical_Risk', ['low', 'medium', 'high']))
 mental = bn.add(gum.LabelizedVariable('Mental_Risk', 'Mental_Risk', ['low', 'medium', 'high']))
 
+#Arc creation according to defined dependencies (page 14 of the report)
 for link in [(safe, safety), (alone, safety), (wi, fi_wi), (fi, fi_wi), (age, bf), (weight, bf), (gender, bf), (bf, prf), (gpd, a_rc), (a_rc, prf), (units, drf), (duration, drf), (safety, mental), (drf, mental), (drf, physical), (prf, physical), (fi_wi, physical)]:
   bn.addArc(*link)
 
@@ -162,7 +165,7 @@ def get_data():
     mental_prob = ie.posterior('Mental_Risk')
 
     #Printing the different messages (page 24 of the report)
-    # Additional messages (according toi the user's age and alone/not alone)
+    #Additional messages (according to the user's age and alone/not alone)
     user_age = int(drinkingData.get('Age', 0))
     is_alone = drinkingData.get('Alone', 'no') == 'yes'
 
@@ -186,37 +189,39 @@ def get_data():
         physical_message = "High"
 
     # Display additional messages based on conditions
-    if user_age < 18:
-        additional_message = "You’re a little young to be out! You could give your parents a quick ring, they might be worried for you."
+    if user_age < 18 and is_alone :
+        additional_message = "You’re a little young to be out! You could give your parents a quick ring, they might be worried for you. \n Also, you should go find your friends or call someone, it’s always better to be accompanied."
     elif is_alone:
         additional_message = "You should go find your friends or call someone, it’s always better to be accompanied."
+    elif user_age <18 :
+        additional_message = "You’re a little young to be out! You could give your parents a quick ring, they might be worried for you."
     else:
         additional_message = ""
 
     # Construct final message based on mental and physical risk
     if mental_message == "Low":
         if physical_message == "Low":
-            final_message = "You're off to a good start tonight. Keep an eye on your surroundings and remember to take regular breaks. Enjoy yourself responsibly and prioritize your well-being throughout the night."
+            final_message = "You're off to a good start tonight. Keep an eye on your surroundings and remember to take regular breaks. \n Enjoy yourself responsibly and prioritize your well-being throughout the night."
         elif physical_message == "Medium":
-            final_message = "Things are looking good mentally, but there's a bit of physical risk to consider. Stay cautious and aware of your surroundings. Take breaks when needed and ensure you're staying safe while having fun."
+            final_message = "Things are looking good mentally, but there's a bit of physical risk to consider. Stay cautious and aware of your surroundings. \n Take breaks when needed and ensure you're staying safe while having fun."
         else:  # High physical risk
-            final_message = "While your mental state is stable, there's some notable physical risk tonight. Stay vigilant and prioritize your safety above all else. Don't hesitate to seek help or remove yourself from any risky situations."
+            final_message = "While your mental state is stable, there's some notable physical risk tonight. Stay vigilant and prioritize your safety above all else. \n Don't hesitate to seek help or remove yourself from any risky situations."
 
     elif mental_message == "Medium":
         if physical_message == "Low":
-            final_message = "You're doing alright mentally, but there's still some potential for physical challenges. Keep an eye on yourself and your surroundings. Take breaks as necessary and ensure you're staying safe throughout the night."
+            final_message = "You're doing alright mentally, but there's still some potential for physical challenges. Keep an eye on yourself and your surroundings. \n Take breaks as necessary and ensure you're staying safe throughout the night."
         elif physical_message == "Medium":
-            final_message = "Things are a bit uncertain both mentally and physically. Stay cautious and mindful of your well-being. Take regular breaks, assess your surroundings, and don't hesitate to ask for help if needed."
+            final_message = "Things are a bit uncertain both mentally and physically. Stay cautious and mindful of your well-being. \n Take regular breaks, assess your surroundings, and don't hesitate to ask for help if needed."
         else:  # High physical risk
-            final_message = "With some mental and physical uncertainties, it's important to prioritize your safety. Stay aware of your surroundings and trust your instincts. Consider seeking assistance or removing yourself from risky situations as needed."
+            final_message = "With some mental and physical uncertainties, it's important to prioritize your safety. Stay aware of your surroundings and trust your instincts. \n Consider seeking assistance or removing yourself from risky situations as needed."
 
     else:  # High mental risk
         if physical_message == "Low":
-            final_message = "While your mental state may be challenging, physical risks are relatively low. Prioritize self-care and safety tonight. Stay vigilant and don't hesitate to seek help or take a break if needed."
+            final_message = "While your mental state may be challenging, physical risks are relatively low. Prioritize self-care and safety tonight. \n Stay vigilant and don't hesitate to seek help or take a break if needed."
         elif physical_message == "Medium":
-            final_message = "With significant mental challenges and some physical risks, it's crucial to prioritize your well-being. Stay aware of your surroundings and listen to your body. Seek assistance or remove yourself from any risky situations as necessary."
+            final_message = "With significant mental challenges and some physical risks, it's crucial to prioritize your well-being. Stay aware of your surroundings and listen to your body. \n Seek assistance or remove yourself from any risky situations as necessary."
         else:  # High physical risk
-            final_message = "Tonight comes with significant challenges both mentally and physically. Prioritize your safety above all else. Stay vigilant, trust your instincts, and don't hesitate to seek help or remove yourself from any unsafe situations immediately."
+            final_message = "Tonight comes with significant challenges both mentally and physically. Prioritize your safety above all else. \n Stay vigilant, trust your instincts, and don't hesitate to seek help or remove yourself from any unsafe situations immediately."
 
     return jsonify({"final_message": final_message, "additional_message": additional_message})
 

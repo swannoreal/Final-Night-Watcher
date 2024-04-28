@@ -25,14 +25,14 @@ function HomePage() {
   };
 
   const handleDrinkingPage = () => {
-    //console.log("Hello");
+    //console.log("A"); (just a test)
     navigate('/drinking');
   };
 
   return (
     <body>
         <center><div class="homeContainer">
-        <h2 id="welcomeMessage">Hello, {user && user.name}</h2>
+        <h2 id="welcomeMessage">Hello, {user && user.name}</h2> 
         <button id="logoutButton" onClick={handleLogout}>Logout</button>
         <button id="sessionButton" onClick={handleDrinkingPage}>I'm out drinking tonight!</button>
         </div>

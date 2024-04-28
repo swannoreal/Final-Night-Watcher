@@ -1,3 +1,28 @@
+This fikle contains code for the ~Night Watcher frontend and its Flask API backend (prediction model). Follow the instructions below to set up and run the application:
+
+Installation
+
+
+1. Backend (Flask API)
+Navigate to the backend directory:
+cd backend
+Create a virtual environment (optional but recommended) use python3 if on Mac and if Python 3 is installed:
+python -m venv venv 
+Install dependencies using pip:
+pip intsall pyagrum
+pip instal Flask-SQLAlchemy
+Run the api:
+python prediction_model.py
+
+
+2. Frontend (React.js)
+Navigate to the frontend directory:
+cd components
+Start the development server:
+npm start
+Open your browser and navigate to http://localhost:3000 (in mycase, port 3001) to view the application.
+
+
 The App Night Watcher has four different oages that the user can acces: 
 
 - the login page (LoginPage.jsx) that is the default page that user access. The page collects the user's email and password, checking if they correspond to existing information in the temporary database "users.json". Once the user is logged in, they access:

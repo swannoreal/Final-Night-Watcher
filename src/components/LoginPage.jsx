@@ -19,23 +19,7 @@ function LoginPage() {
       if (user.password === password){
         localStorage.setItem('loggedInUser', JSON.stringify({ email: user.email }));
         
-        // Extract additional user information
-        const { age, weight, gender, gpd } = user;
 
-        // Store additional user information in another JSON file
-        const userDataEntry = {
-          email: user.email,
-          age: age,
-          weight: weight,
-          gender: gender,
-          gpd: gpd
-        }
-
-        // Add the user data entry to the existing user data JSON
-        users.users.push(userDataEntry);
-
-        // Update the user data JSON file
-        // Note: This is a simplified approach, in a real-world application, you might use a backend server to handle this.
         localStorage.setItem('users', JSON.stringify(users));
 
 
